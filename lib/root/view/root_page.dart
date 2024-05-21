@@ -8,23 +8,25 @@ class RootPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BaseScreen(
-        builder: (context, constraints) {
-          return Column(
-            children: [
-              const Text('Koray Metin'),
-              const SizedBox(height: 12.0),
-              BlocBuilder<ThemeCubit, dynamic>(
-                builder: (context, state) {
-                  return Switch(
-                      value: (state == ThemeMode.light),
-                      onChanged: (newValue) {
-                        (newValue) ?context.read<ThemeCubit>().themeToLight() :context.read<ThemeCubit>().themeToDark();
-                      });
-                }
-              ),
-            ],
-          );
-        });
+    return BaseScreen(builder: (context, constraints) {
+      return Column(
+        children: [
+          const Text('Koray Metin'),
+          const SizedBox(height: 12.0),
+          BlocBuilder<ThemeCubit, dynamic>(builder: (context, state) {
+            return Switch(
+                thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
+                  (Set<WidgetState> states) {
+                    return states.contains(WidgetState.selected) ? const Icon(Icons.light_mode) : const Icon(Icons.dark_mode);
+                  },
+                ),
+                value: (state == ThemeMode.light),
+                onChanged: (newValue) {
+                  (newValue) ? context.read<ThemeCubit>().themeToLight() : context.read<ThemeCubit>().themeToDark();
+                });
+          }),
+        ],
+      );
+    });
   }
 }
